@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   FlatList,
   SafeAreaView,
+  Pressable as RNPressable,
 } from "react-native";
 import {
   GestureDetector,
@@ -37,21 +38,33 @@ const hours = [
 
 const END_POSITION = 300;
 
+const Pressable = Animated.createAnimatedComponent(RNPressable);
+
+const SAMPLE_SLOT_POSITION = {
+  "key-1": 0,
+  "key-2": 200,
+} as { [key: string]: number };
+
 export default function App() {
   const onDrag = useSharedValue(true);
-  const position = useSharedValue(0);
+  const [active, setActive] = useState("key-1");
+  const [isDragging, setDragging] = useState(false);
+
+  const position = useSharedValue(SAMPLE_SLOT_POSITION);
 
   /* 
-  Todo: define a strategy to handle multiple time blocks. 
-  -> Each time block should have its own position property which should be used to define it's initial position.
-  -> PanGesture animation should be activated after long press
-  -> time-blocks should be 
+Todo: Define strategy to handle action when dragging stops, debounce!!! 
   */
 
   const panGesture = Gesture.Pan()
     .onUpdate((e) => {
       if (e.translationY > -1) {
-        position.value = e.translationY;
+        console.log(position.value);
+        position.value = {
+          ...position.value,
+          [`${active}`]: e.translationY,
+        };
+        //   console.log(position.value);
       }
 
       // if (onDrag.value) {
@@ -61,18 +74,31 @@ export default function App() {
       // }
     })
     .onEnd((e) => {
-      if (position.value > END_POSITION / 2) {
-        position.value = withTiming(END_POSITION, { duration: 100 });
+      // define final Y position
+      if (position.value[active] > END_POSITION / 2) {
+        position.value = {
+          ...position.value,
+          [`${active}`]: e.translationY,
+        };
         onDrag.value = false;
       } else {
-        position.value = withTiming(0, { duration: 100 });
+        position.value = {
+          ...position.value,
+          [`${active}`]: e.translationY, //withTiming(0, { duration: 100 }),
+        };
         onDrag.value = true;
       }
     });
 
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: position.value }],
-  }));
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          translateY: position.value[active],
+        },
+      ],
+    };
+  }, [active]);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -104,7 +130,26 @@ export default function App() {
               )}
             />
 
-            <Animated.View
+            {isDragging && (
+              <Animated.View
+                style={[
+                  {
+                    width: 300,
+                    height: 120,
+                    backgroundColor: "green",
+                    position: "absolute",
+                    left: 50,
+                  },
+                  animatedStyle,
+                ]}
+              />
+            )}
+
+            <Pressable
+              onLongPress={() => {
+                setActive("key-1");
+                setDragging(!isDragging);
+              }}
               style={[
                 {
                   width: 300,
@@ -112,8 +157,27 @@ export default function App() {
                   backgroundColor: "blue",
                   position: "absolute",
                   left: 50,
+                  opacity: isDragging && active == "key-1" ? 0 : 1,
+                  transform: [{ translateY: position.value["key-1"] }],
                 },
-                animatedStyle,
+              ]}
+            />
+
+            <Pressable
+              onLongPress={() => {
+                setActive("key-2");
+                setDragging(!isDragging);
+              }}
+              style={[
+                {
+                  width: 300,
+                  height: 120,
+                  backgroundColor: "red",
+                  position: "absolute",
+                  left: 50,
+                  opacity: isDragging && active == "key-2" ? 0 : 1,
+                  transform: [{ translateY: position.value["key-2"] }],
+                },
               ]}
             />
           </View>
