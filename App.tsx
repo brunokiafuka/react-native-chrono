@@ -53,10 +53,11 @@ export default function App() {
   const position = useSharedValue(SAMPLE_SLOT_POSITION);
 
   /* 
-Todo: Define strategy to handle action when dragging stops, debounce!!! 
+Todo: Fix, draggable area. Enable draggable on empty area.
   */
 
   const panGesture = Gesture.Pan()
+    .runOnJS(true)
     .onUpdate((e) => {
       if (e.translationY > -1) {
         console.log(position.value);
@@ -80,7 +81,9 @@ Todo: Define strategy to handle action when dragging stops, debounce!!!
           ...position.value,
           [`${active}`]: e.translationY,
         };
-        onDrag.value = false;
+
+        setDragging(false);
+        alert("Show booking screen");
       } else {
         position.value = {
           ...position.value,
