@@ -27,4 +27,8 @@ export const appointments = [
     startDate: "2024-02-23T16:00:55.304Z",
     endDate: "2024-02-23T16:05:55.304Z",
   },
+  {
+    startDate: "2024-02-23T19:00:55.304Z",
+    endDate: "2024-02-23T19:45:55.304Z",
+  },
 ];

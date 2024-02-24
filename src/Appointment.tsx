@@ -3,9 +3,11 @@ import { format } from "date-fns";
 import { calculateAppointmentHeight, randomColor } from "./utils/misc";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
+  runOnJS,
   useAnimatedStyle,
   useSharedValue,
 } from "react-native-reanimated";
+import { useState } from "react";
 
 type Props = {
   type: string;
@@ -30,6 +32,8 @@ export const Appointment = ({ startDate, endDate }: Props) => {
   const startTime = format(new Date(startDate), "h:mm a");
   const endTime = format(new Date(endDate), "h:mm a");
 
+  const [isDragging, setIsDragging] = useState(false);
+
   const dragGesture = Gesture.Pan()
     .activateAfterLongPress(500)
     .onStart((event) => {
@@ -37,11 +41,16 @@ export const Appointment = ({ startDate, endDate }: Props) => {
     })
     .onUpdate((event) => {
       position.value = { x: event.x, y: event.absoluteY };
+      runOnJS(setIsDragging)(true);
+    })
+    .onEnd(() => {
+      runOnJS(setIsDragging)(false);
     });
 
   const animatedStyles = useAnimatedStyle(() => {
     return {
       transform: [{ translateY: position.value.y }],
+      zIndex: isDragging ? 100 : 0,
     };
   });
 
@@ -59,12 +68,10 @@ export const Appointment = ({ startDate, endDate }: Props) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: "80%",
+    width: "100%",
     position: "absolute",
     borderRadius: 5,
     padding: 10,
     alignSelf: "flex-end",
-    marginTop: 10,
-    right: 15,
   },
 });
