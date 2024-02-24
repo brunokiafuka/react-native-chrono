@@ -12,7 +12,7 @@ export function calculateAppointmentHeight(start: Date, end: Date) {
   const minutes = (differenceInMinutes(end, start) / 60) * hourHeight;
 
   const height = hourDiff + minutes;
-  const minHeight = 70;
+  const minHeight = 30;
 
   return height <= minHeight ? minHeight : height;
 }

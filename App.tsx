@@ -26,6 +26,7 @@ export default function App() {
             type=""
             startDate={item.startDate}
             endDate={item.endDate}
+            id={item.id}
           />
         )}
       />

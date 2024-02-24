@@ -1,18 +1,12 @@
 import { Text, StyleSheet, View } from "react-native";
-import { format } from "date-fns";
+import { format, getHours, getMinutes } from "date-fns";
 import { calculateAppointmentHeight, randomColor } from "./utils/misc";
-import { Gesture, GestureDetector } from "react-native-gesture-handler";
-import Animated, {
-  runOnJS,
-  useAnimatedStyle,
-  useSharedValue,
-} from "react-native-reanimated";
-import { useState } from "react";
 
 type Props = {
   type: string;
   startDate: string;
   endDate: string;
+  id: string;
 };
 
 export const Appointment = ({ startDate, endDate }: Props) => {
@@ -22,48 +16,20 @@ export const Appointment = ({ startDate, endDate }: Props) => {
   );
   const backgroundColor = randomColor();
 
-  const hour = new Date(startDate).getHours();
-
   const startHour = 8;
-  const top = (hour - startHour) * 100;
-
-  const position = useSharedValue({ x: 0, y: 0 });
+  const hourHeight = 100;
+  const hours = getHours(new Date(startDate));
+  const minutes = getMinutes(new Date(startDate));
+  const top = hourHeight * (hours - startHour) + (minutes * hourHeight) / 60;
 
   const startTime = format(new Date(startDate), "h:mm a");
   const endTime = format(new Date(endDate), "h:mm a");
 
-  const [isDragging, setIsDragging] = useState(false);
-
-  const dragGesture = Gesture.Pan()
-    .activateAfterLongPress(500)
-    .onUpdate((event) => {
-      position.value = { x: event.x, y: event.translationY };
-      runOnJS(setIsDragging)(true);
-    })
-    .onEnd(() => {
-      runOnJS(setIsDragging)(false);
-    });
-
-  const animatedStyles = useAnimatedStyle(() => {
-    return {
-      transform: [{ translateY: position.value.y }],
-      zIndex: isDragging ? 100 : 0,
-    };
-  });
-
   return (
-    <GestureDetector gesture={dragGesture}>
-      <Animated.View
-        style={[
-          styles.container,
-          { backgroundColor, height, top },
-          animatedStyles,
-        ]}
-      >
-        <Text>Start Time: {startTime}</Text>
-        <Text>End Time: {endTime}</Text>
-      </Animated.View>
-    </GestureDetector>
+    <View style={[styles.container, { backgroundColor, height, top: top }]}>
+      <Text>Start Time: {startTime}</Text>
+      <Text>End Time: {endTime}</Text>
+    </View>
   );
 };
 
@@ -72,7 +38,8 @@ const styles = StyleSheet.create({
     width: "100%",
     position: "absolute",
     borderRadius: 5,
-    padding: 10,
+    padding: 3,
     alignSelf: "flex-end",
+    flexDirection: "row",
   },
 });
