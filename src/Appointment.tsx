@@ -1,6 +1,6 @@
 import { Text, StyleSheet, View } from "react-native";
 import { format } from "date-fns";
-import { calculateInclusiveHours, randomColor } from "./utils/misc";
+import { calculateAppointmentHeight, randomColor } from "./utils/misc";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
   useAnimatedStyle,
@@ -14,8 +14,10 @@ type Props = {
 };
 
 export const Appointment = ({ startDate, endDate }: Props) => {
-  const height =
-    calculateInclusiveHours(new Date(startDate), new Date(endDate)) * 100;
+  const height = calculateAppointmentHeight(
+    new Date(startDate),
+    new Date(endDate),
+  );
   const backgroundColor = randomColor();
 
   const hour = new Date(startDate).getHours();
