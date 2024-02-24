@@ -8,8 +8,11 @@ export const randomColor = () => {
 export function calculateAppointmentHeight(start: Date, end: Date) {
   const hourHeight = 100;
 
-  const height = differenceInHours(end, start);
+  const hourDiff = differenceInHours(end, start);
   const minutes = (differenceInMinutes(end, start) / 60) * hourHeight;
 
-  return height + minutes;
+  const height = hourDiff + minutes;
+  const minHeight = 70;
+
+  return height <= minHeight ? minHeight : height;
 }
