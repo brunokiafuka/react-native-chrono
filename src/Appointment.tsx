@@ -33,10 +33,10 @@ export const Appointment = ({ startDate, endDate }: Props) => {
   const dragGesture = Gesture.Pan()
     .activateAfterLongPress(500)
     .onStart((event) => {
-      position.value = { x: 0, y: position.value.y };
+      position.value = { x: 0, y: event.absoluteY };
     })
     .onUpdate((event) => {
-      position.value = { x: event.x, y: event.translationY };
+      position.value = { x: event.x, y: event.absoluteY };
     });
 
   const animatedStyles = useAnimatedStyle(() => {
@@ -59,16 +59,12 @@ export const Appointment = ({ startDate, endDate }: Props) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: 50,
-    width: "100%",
-    paddingLeft: 52,
-    backgroundColor: "purple",
+    width: "80%",
     position: "absolute",
-    shadowOpacity: 0.1,
-    shadowRadius: 1,
-    shadowColor: "#grey",
-    shadowOffset: { height: 2, width: 2 },
     borderRadius: 5,
     padding: 10,
+    alignSelf: "flex-end",
+    marginTop: 10,
+    right: 15,
   },
 });
