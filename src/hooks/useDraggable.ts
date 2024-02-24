@@ -28,6 +28,14 @@ export const useDraggable = () => {
         { translateX: position.value.x },
       ],
       zIndex: isDragging ? 100 : 0,
+      shadowOffset: {
+        shadowColor: isDragging ? "#000" : "transparent",
+        width: 0,
+        height: isDragging ? 2 : 0,
+      },
+      shadowOpacity: isDragging ? 0.25 : 0,
+      shadowRadius: isDragging ? 3.84 : 0,
+      elevation: isDragging ? 5 : 0,
     };
   });
 
