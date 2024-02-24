@@ -25,6 +25,7 @@ export const Appointment = ({ startDate, endDate }: Props) => {
   const dragGesture = Gesture.Pan()
     .activateAfterLongPress(500)
     .onUpdate((event) => {
+      console.log("event");
       position.value = { x: event.x, y: event.translationY };
     });
 
@@ -34,7 +35,6 @@ export const Appointment = ({ startDate, endDate }: Props) => {
     };
   });
 
-  console.log("position", position.value);
   return (
     <GestureDetector gesture={dragGesture}>
       <Animated.View
@@ -59,5 +59,6 @@ const styles = StyleSheet.create({
     shadowOffset: { height: 2, width: 2 },
     borderRadius: 5,
     padding: 10,
+    zIndex: 9000,
   },
 });

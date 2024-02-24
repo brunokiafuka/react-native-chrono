@@ -35,9 +35,9 @@ export const Agenda = (props: Props) => {
           renderItem={({ item }) => {
             const hour = parseInt(item.time.split(":")[0]);
             const hourAppointments = getAppointmentByHour(hour);
+
             return (
               <TimeSlot time={item.time} scale={scale}>
-                {/* <View style={{ flex: 1, marginLeft: 50 }}> */}
                 {hourAppointments.map((appointment, idx) => (
                   <Appointment
                     key={idx}
@@ -46,7 +46,6 @@ export const Agenda = (props: Props) => {
                     endDate={appointment.endDate}
                   />
                 ))}
-                {/* </View> */}
               </TimeSlot>
             );
           }}

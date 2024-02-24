@@ -19,11 +19,11 @@ export const TimeSlot = ({ time, scale, children }: Props) => {
 
   return (
     <Animated.View style={[styles.container, animatedStyle]}>
+      <View style={styles.children}>{children}</View>
       <View style={styles.slot}>
         <Text style={styles.text}>{time}</Text>
         <View style={styles.line} />
       </View>
-      <View style={styles.children}>{children}</View>
     </Animated.View>
   );
 };
@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
     height: 100,
     paddingHorizontal: 10,
     alignItems: "center",
+    backgroundColor: "white",
   },
   slot: {
     marginHorizontal: 20,
