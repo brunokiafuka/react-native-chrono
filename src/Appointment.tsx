@@ -15,17 +15,25 @@ type Props = {
 
 export const Appointment = ({ startDate, endDate }: Props) => {
   const height =
-    calculateInclusiveHours(new Date(startDate), new Date(endDate)) * 50;
+    calculateInclusiveHours(new Date(startDate), new Date(endDate)) * 100;
   const backgroundColor = randomColor();
-  const position = useSharedValue({ x: 0, y: 0 });
+
+  const hour = new Date(startDate).getHours();
+
+  const startHour = 8;
+  const y = (hour - startHour) * 100;
+
+  const position = useSharedValue({ x: 0, y: y });
 
   const startTime = format(new Date(startDate), "h:mm a");
   const endTime = format(new Date(endDate), "h:mm a");
 
   const dragGesture = Gesture.Pan()
     .activateAfterLongPress(500)
+    .onStart((event) => {
+      position.value = { x: 0, y: position.value.y };
+    })
     .onUpdate((event) => {
-      console.log("event");
       position.value = { x: event.x, y: event.translationY };
     });
 
