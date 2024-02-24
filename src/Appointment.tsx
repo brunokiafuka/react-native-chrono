@@ -25,9 +25,9 @@ export const Appointment = ({ startDate, endDate }: Props) => {
   const hour = new Date(startDate).getHours();
 
   const startHour = 8;
-  const y = (hour - startHour) * 100;
+  const top = (hour - startHour) * 100;
 
-  const position = useSharedValue({ x: 0, y: y });
+  const position = useSharedValue({ x: 0, y: 0 });
 
   const startTime = format(new Date(startDate), "h:mm a");
   const endTime = format(new Date(endDate), "h:mm a");
@@ -36,11 +36,8 @@ export const Appointment = ({ startDate, endDate }: Props) => {
 
   const dragGesture = Gesture.Pan()
     .activateAfterLongPress(500)
-    .onStart((event) => {
-      position.value = { x: 0, y: event.absoluteY };
-    })
     .onUpdate((event) => {
-      position.value = { x: event.x, y: event.absoluteY };
+      position.value = { x: event.x, y: event.translationY };
       runOnJS(setIsDragging)(true);
     })
     .onEnd(() => {
@@ -57,7 +54,11 @@ export const Appointment = ({ startDate, endDate }: Props) => {
   return (
     <GestureDetector gesture={dragGesture}>
       <Animated.View
-        style={[styles.container, { backgroundColor, height }, animatedStyles]}
+        style={[
+          styles.container,
+          { backgroundColor, height, top },
+          animatedStyles,
+        ]}
       >
         <Text>Start Time: {startTime}</Text>
         <Text>End Time: {endTime}</Text>
