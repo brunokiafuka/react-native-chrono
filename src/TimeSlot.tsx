@@ -7,10 +7,9 @@ import Animated, {
 type Props = {
   time: string;
   scale: SharedValue<number>;
-  children: React.ReactNode;
 };
 
-export const TimeSlot = ({ time, scale, children }: Props) => {
+export const TimeSlot = ({ time, scale }: Props) => {
   const animatedStyle = useAnimatedStyle(() => {
     return {
       height: scale.value,
@@ -19,7 +18,6 @@ export const TimeSlot = ({ time, scale, children }: Props) => {
 
   return (
     <Animated.View style={[styles.container, animatedStyle]}>
-      <View style={styles.children}>{children}</View>
       <View style={styles.slot}>
         <Text style={styles.text}>{time}</Text>
         <View style={styles.line} />
@@ -41,12 +39,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   text: {},
-  children: {
-    marginTop: -7,
-    flex: 1,
-    marginLeft: 40,
-    alignItems: "center",
-  },
   line: {
     height: 2,
     marginLeft: 10,

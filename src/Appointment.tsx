@@ -1,4 +1,4 @@
-import { Text, StyleSheet } from "react-native";
+import { Text, StyleSheet, View } from "react-native";
 import { format } from "date-fns";
 import { calculateInclusiveHours, randomColor } from "./utils/misc";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
   container: {
     height: 50,
     width: "100%",
+    paddingLeft: 52,
     backgroundColor: "purple",
     position: "absolute",
     shadowOpacity: 0.1,
@@ -59,6 +60,5 @@ const styles = StyleSheet.create({
     shadowOffset: { height: 2, width: 2 },
     borderRadius: 5,
     padding: 10,
-    zIndex: 9000,
   },
 });
