@@ -1,6 +1,6 @@
 import { FlashList } from "@shopify/flash-list";
-import React from "react";
-import { StyleSheet, View } from "react-native";
+import React, { useCallback, useMemo } from "react";
+import { StyleSheet, View, ScrollView } from "react-native";
 import { TimeSlot } from "./TimeSlot";
 import { generateTimeSlots } from "./utils/generateTimeSlots";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
@@ -28,31 +28,21 @@ export const Agenda = (props: Props) => {
 
   return (
     <GestureDetector gesture={gesture}>
-      <View style={{ flex: 1 }}>
-        <FlashList
-          estimatedItemSize={100}
-          getItemType={(item) => item.type}
-          renderItem={({ item }) => {
-            const hour = parseInt(item.time.split(":")[0]);
-            const hourAppointments = getAppointmentByHour(hour);
-            return (
-              <TimeSlot time={item.time} scale={scale}>
-                {/* <View style={{ flex: 1, marginLeft: 50 }}> */}
-                {hourAppointments.map((appointment, idx) => (
-                  <Appointment
-                    key={idx}
-                    type=""
-                    startDate={appointment.startDate}
-                    endDate={appointment.endDate}
-                  />
-                ))}
-                {/* </View> */}
-              </TimeSlot>
-            );
-          }}
-          data={timeSlots.map((time) => ({ time, type: time + "time" }))}
-        />
-      </View>
+      <ScrollView>
+        <View style={styles.container}>
+          {timeSlots.map((time) => (
+            <TimeSlot key={time} time={time} scale={scale} />
+          ))}
+        </View>
+        {appointments.map((appointment, idx) => (
+          <Appointment
+            key={idx}
+            type=""
+            startDate={appointment.startDate}
+            endDate={appointment.endDate}
+          />
+        ))}
+      </ScrollView>
     </GestureDetector>
   );
 };

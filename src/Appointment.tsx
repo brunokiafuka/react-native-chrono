@@ -1,6 +1,6 @@
-import { Text, StyleSheet } from "react-native";
+import { Text, StyleSheet, View } from "react-native";
 import { format } from "date-fns";
-import { calculateInclusiveHours, randomColor } from "./utils/misc";
+import { calculateAppointmentHeight, randomColor } from "./utils/misc";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
   useAnimatedStyle,
@@ -14,18 +14,29 @@ type Props = {
 };
 
 export const Appointment = ({ startDate, endDate }: Props) => {
-  const height =
-    calculateInclusiveHours(new Date(startDate), new Date(endDate)) * 50;
+  const height = calculateAppointmentHeight(
+    new Date(startDate),
+    new Date(endDate),
+  );
   const backgroundColor = randomColor();
-  const position = useSharedValue({ x: 0, y: 0 });
+
+  const hour = new Date(startDate).getHours();
+
+  const startHour = 8;
+  const y = (hour - startHour) * 100;
+
+  const position = useSharedValue({ x: 0, y: y });
 
   const startTime = format(new Date(startDate), "h:mm a");
   const endTime = format(new Date(endDate), "h:mm a");
 
   const dragGesture = Gesture.Pan()
     .activateAfterLongPress(500)
+    .onStart((event) => {
+      position.value = { x: 0, y: event.absoluteY };
+    })
     .onUpdate((event) => {
-      position.value = { x: event.x, y: event.translationY };
+      position.value = { x: event.x, y: event.absoluteY };
     });
 
   const animatedStyles = useAnimatedStyle(() => {
@@ -34,7 +45,6 @@ export const Appointment = ({ startDate, endDate }: Props) => {
     };
   });
 
-  console.log("position", position.value);
   return (
     <GestureDetector gesture={dragGesture}>
       <Animated.View
@@ -49,15 +59,12 @@ export const Appointment = ({ startDate, endDate }: Props) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: 50,
-    width: "100%",
-    backgroundColor: "purple",
+    width: "80%",
     position: "absolute",
-    shadowOpacity: 0.1,
-    shadowRadius: 1,
-    shadowColor: "#grey",
-    shadowOffset: { height: 2, width: 2 },
     borderRadius: 5,
     padding: 10,
+    alignSelf: "flex-end",
+    marginTop: 10,
+    right: 15,
   },
 });
