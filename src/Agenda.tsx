@@ -1,33 +1,24 @@
 import React, { useMemo } from "react";
-import { StyleSheet, View, ScrollView } from "react-native";
+import { StyleSheet, View, ScrollView, Text } from "react-native";
 import { generateTimeSlots } from "./utils/generateTimeSlots";
-import type { Appointment } from "./types/appointment";
-import { Draggable } from "./Draggable";
+import type { TEvent } from "./types/events";
+import { Draggable } from "./components/Draggable";
+import { Event } from "./components/Event";
 
-type Props<T extends Appointment> = {
+type Props<T extends TEvent> = {
   startHour: number;
   endHour: number;
   data: T[];
   itemSize: number;
   scrollEnabled?: boolean;
-  renderItem: ({ item, index }: { item: T; index: number }) => React.ReactNode;
-  renderTimeSlot: ({
-    item,
-    index,
-  }: {
-    item: string;
-    index: number;
-  }) => React.ReactNode;
 };
 
-export const Agenda = <T extends Appointment>({
+export const Agenda = <T extends TEvent>({
   startHour,
   endHour,
   data,
-  renderItem,
   itemSize,
   scrollEnabled = true,
-  renderTimeSlot,
 }: Props<T>) => {
   const timeSlots = generateTimeSlots(startHour, endHour);
 
@@ -42,13 +33,24 @@ export const Agenda = <T extends Appointment>({
       <View style={styles.timeSlotContainer}>
         {timeSlots.map((item, index) => (
           <View key={index} style={itemStyle}>
-            {renderTimeSlot({ item, index })}
+            {/* Todo: move this into a separated component */}
+            <View style={styles.timeSlot}>
+              <Text>{item}</Text>
+            </View>
           </View>
         ))}
       </View>
       <View style={styles.itemContainer}>
         {data.map((item, index) => (
-          <Draggable key={item.id}>{renderItem({ item, index })}</Draggable>
+          <Draggable key={item.id}>
+            <Event
+              key={index}
+              type=""
+              startDate={item.startDate}
+              endDate={item.endDate}
+              id={item.id}
+            />
+          </Draggable>
         ))}
       </View>
     </ScrollView>
@@ -64,5 +66,9 @@ const styles = StyleSheet.create({
   timeSlotContainer: {},
   itemContainer: {
     flex: 2,
+  },
+  timeSlot: {
+    flex: 1,
+    alignItems: "center",
   },
 });

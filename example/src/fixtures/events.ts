@@ -1,4 +1,5 @@
-export const appointments = [
+// TODO: Fix event shape to match
+export const EVENTS = [
   {
     id: "1",
     startDate: "2024-02-23T07:00:55.304Z",

@@ -20,33 +20,14 @@ yarn add react-native-chrono
 ## Usage
 
 ```js
-import { Agenda, Appointment } from "react-native-chrono";
+import { Agenda } from "react-native-chrono";
 // ...
 
-const events = []
+const EVENTS: TAgendaData = []
 
- <Agenda
-    startHour={8}
-    endHour={22}
-    data={events}
-    itemSize={100}
-    renderTimeSlot={({ item }) => {
-      return (
-        <View style={styles.timeSlot}>
-          <Text>{item}</Text>
-        </View>
-      );
-    }}
-    renderItem={({ item, index }) => (
-      <Appointment
-        key={index}
-        type=""
-        startDate={item.startDate}
-        endDate={item.endDate}
-        id={item.id}
-      />
-    )}
-/>
+ <GestureHandlerRootView style={styles.container}>
+      <Agenda startHour={8} endHour={22} data={EVENTS} itemSize={100} />
+</GestureHandlerRootView>
 ```
 
 ## Contributing

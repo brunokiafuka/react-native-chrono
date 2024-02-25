@@ -1,5 +1,4 @@
-import { appointments } from "./fixtures/appointments";
-import { Appointment } from "./Appointment";
+import { Event } from "./components/Event";
 import { Agenda } from "./Agenda";
 
-export { Agenda, appointments, Appointment };
+export { Agenda, Event as Events };
