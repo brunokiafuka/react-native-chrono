@@ -1,14 +1,13 @@
 import React from "react";
 import { View, StyleSheet, Text } from "react-native";
-import { Agenda } from "./src/Agenda";
+
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { appointments } from "./src/fixtures/appointments";
-import { Appointment } from "./src/Appointment";
+import { Agenda, appointments, Appointment } from "react-native-chrono";
 
 export default function App() {
   return (
     <GestureHandlerRootView style={styles.container}>
-      <Agenda
+       <Agenda
         startHour={8}
         endHour={22}
         data={appointments}

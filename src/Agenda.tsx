@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { StyleSheet, View, ScrollView } from "react-native";
 import { generateTimeSlots } from "./utils/generateTimeSlots";
-import { Appointment } from "./types/appointment";
+import type { Appointment } from "./types/appointment";
 import { Draggable } from "./Draggable";
 
 type Props<T extends Appointment> = {
