@@ -1,7 +1,15 @@
 {
   "name": "react-native-chrono",
   "version": "0.0.1-beta",
-  "description": "An awesome calendar",
+  "description": "An awesome agenda view",
+  "keywords": [
+    "agenda",
+    "events",
+    "appointment",
+    "calendar",
+    "dates",
+    "weekdays"
+  ],
   "contributors": [],
   "license": "MIT",
   "homepage": "#readme",
