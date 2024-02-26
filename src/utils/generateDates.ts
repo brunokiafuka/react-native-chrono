@@ -1,5 +1,13 @@
 import { format } from "date-fns";
 
+function isLeapYear(year: number) {
+  if ((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 /**
  * This function generates weeks within a year
  * each week will contain an array with the respective days
@@ -9,7 +17,9 @@ export function generateDates(minYear: number, maxYear: number): TWeeksInYear {
   const result = {};
 
   for (let year = minYear; year <= maxYear; year++) {
-    for (let i = 1; i <= 365; i++) {
+    const totalDays = isLeapYear(year) ? 366 : 365;
+
+    for (let i = 1; i <= totalDays; i++) {
       const currentDate = new Date(year, 0, i);
 
       const weekNumber = Math.floor((i - 1) / 7) + 1;
