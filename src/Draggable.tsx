@@ -1,3 +1,4 @@
+import React from "react";
 import { GestureDetector } from "react-native-gesture-handler";
 import Animated from "react-native-reanimated";
 import { useDraggable } from "./hooks/useDraggable";

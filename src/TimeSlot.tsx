@@ -1,6 +1,7 @@
+import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import Animated, {
-  SharedValue,
+  type SharedValue,
   useAnimatedStyle,
 } from "react-native-reanimated";
 

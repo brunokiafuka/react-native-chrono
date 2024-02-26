@@ -21,6 +21,7 @@ export const useDraggable = () => {
       runOnJS(setIsDragging)(false);
     });
 
+  // @ts-ignore: ignore type check
   const animatedStyles = useAnimatedStyle(() => {
     return {
       transform: [
