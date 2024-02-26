@@ -10,7 +10,7 @@ export default function App() {
   return (
     <GestureHandlerRootView style={styles.container}>
       <Agenda
-        startHour={8}
+        startHour={6}
         endHour={22}
         data={appointments}
         itemSize={100}
@@ -40,7 +40,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    paddingHorizontal: 10,
     marginTop: 70,
     flexDirection: "row",
   },

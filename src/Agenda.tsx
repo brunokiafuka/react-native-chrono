@@ -5,6 +5,7 @@ import type { AgendaEvent } from "./types/event";
 import { EventRenderer } from "./components/EventRenderer";
 import { RecoilRoot, useSetRecoilState } from "recoil";
 import { configAtom } from "./store/config";
+import Weekdays from "./components/Weekdays";
 
 type Props<T extends AgendaEvent> = {
   startHour: number;
@@ -69,14 +70,17 @@ export const Agenda = <T extends AgendaEvent>({
   }, [startHour, endHour, itemSize]);
 
   return (
-    <ScrollView
-      scrollEnabled={scrollEnabled}
-      style={styles.container}
-      contentContainerStyle={styles.contentContainer}
-    >
-      <View style={styles.timeSlotContainer}>{renderTimeSlots}</View>
-      <View style={styles.itemContainer}>{renderEvents}</View>
-    </ScrollView>
+    <View style={styles.container}>
+      <ScrollView
+        scrollEnabled={scrollEnabled}
+        style={styles.container}
+        contentContainerStyle={styles.contentContainer}
+      >
+        <Weekdays />
+        <View style={styles.timeSlotContainer}>{renderTimeSlots}</View>
+        <View style={styles.itemContainer}>{renderEvents}</View>
+      </ScrollView>
+    </View>
   );
 };
 
@@ -103,6 +107,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
+    paddingHorizontal: 10,
   },
   timeSlotContainer: {},
   itemContainer: {
