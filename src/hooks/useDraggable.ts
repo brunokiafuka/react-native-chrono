@@ -5,11 +5,15 @@ import {
   useSharedValue,
 } from "react-native-reanimated";
 import { useState } from "react";
+import { useGridColumnPosition } from "../store/grid-column-position";
+import { getNearestColumnPosition } from "../utils/useGridColumnPosition";
 
 export const useDraggable = () => {
+  const positions = useGridColumnPosition((state) => state.positions);
   const position = useSharedValue({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
 
+  console.log({ positions });
   const dragGesture = Gesture.Pan()
     .activateAfterLongPress(500)
     .onUpdate((event) => {
@@ -17,7 +21,12 @@ export const useDraggable = () => {
       runOnJS(setIsDragging)(true);
     })
     .onEnd(() => {
-      position.value = { x: 0, y: position.value.y };
+      const nearestPosition = getNearestColumnPosition(
+        positions,
+        position.value.x,
+      );
+
+      position.value = { x: nearestPosition, y: position.value.y };
       runOnJS(setIsDragging)(false);
     });
 

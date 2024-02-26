@@ -1,3 +1,4 @@
 import { Agenda } from "./Agenda";
+import { GridAgenda } from "./GridAgenda";
 
-export { Agenda };
+export { Agenda, GridAgenda };
