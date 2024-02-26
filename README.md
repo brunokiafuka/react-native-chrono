@@ -20,10 +20,16 @@ yarn add react-native-chrono
 ## Usage
 
 ```js
-import { Agenda, Appointment } from "react-native-chrono";
+import { Agenda } from "react-native-chrono";
 // ...
 
-const events = []
+const events = [
+  {
+    id: "1",
+    startDate: "2024-02-23T07:00:55.304Z",
+    endDate: "2024-02-23T07:50:55.304Z",
+  },
+]
 
  <Agenda
     startHour={8}
@@ -38,13 +44,10 @@ const events = []
       );
     }}
     renderItem={({ item, index }) => (
-      <Appointment
-        key={index}
-        type=""
-        startDate={item.startDate}
-        endDate={item.endDate}
-        id={item.id}
-      />
+      <View key={item.id}>
+        <Text>{item.startDate}</Text>
+        <Text>{item.endDate}</Text>
+      </View>
     )}
 />
 ```

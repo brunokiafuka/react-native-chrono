@@ -13,7 +13,7 @@ type Props = {
 export const Appointment = ({ startDate, endDate }: Props) => {
   const height = calculateAppointmentHeight(
     new Date(startDate),
-    new Date(endDate)
+    new Date(endDate),
   );
   const backgroundColor = randomColor();
 
