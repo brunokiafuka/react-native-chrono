@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, StyleSheet, View } from "react-native";
 import { format, getHours, getMinutes } from "date-fns";
-import { calculateAppointmentHeight, randomColor } from "../utils/misc";
+import { calculateAppointmentHeight, randomColor } from "./utils/misc";
 
 type Props = {
   type: string;
@@ -10,10 +10,10 @@ type Props = {
   id: string;
 };
 
-export const Event = ({ startDate, endDate }: Props) => {
+export const Appointment = ({ startDate, endDate }: Props) => {
   const height = calculateAppointmentHeight(
     new Date(startDate),
-    new Date(endDate),
+    new Date(endDate)
   );
   const backgroundColor = randomColor();
 

@@ -1,14 +1,34 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { Agenda } from "react-native-chrono";
-import { EVENTS } from "./fixtures/events";
+import { Agenda, appointments, Appointment } from "react-native-chrono";
 
 export default function App() {
   return (
     <GestureHandlerRootView style={styles.container}>
-      <Agenda startHour={8} endHour={22} data={EVENTS} itemSize={100} />
+       <Agenda
+        startHour={8}
+        endHour={22}
+        data={appointments}
+        itemSize={100}
+        renderTimeSlot={({ item }) => {
+          return (
+            <View style={styles.timeSlot}>
+              <Text>{item}</Text>
+            </View>
+          );
+        }}
+        renderItem={({ item, index }) => (
+          <Appointment
+            key={index}
+            type=""
+            startDate={item.startDate}
+            endDate={item.endDate}
+            id={item.id}
+          />
+        )}
+      />
     </GestureHandlerRootView>
   );
 }
