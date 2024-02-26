@@ -1,10 +1,10 @@
 import React, { useMemo } from "react";
 import { StyleSheet, View, ScrollView } from "react-native";
 import { generateTimeSlots } from "./utils/generateTimeSlots";
-import type { Appointment } from "./types/appointment";
+import type { Event } from "./types/event";
 import { Draggable } from "./Draggable";
 
-type Props<T extends Appointment> = {
+type Props<T extends Event> = {
   startHour: number;
   endHour: number;
   data: T[];
@@ -20,7 +20,7 @@ type Props<T extends Appointment> = {
   }) => React.ReactNode;
 };
 
-export const Agenda = <T extends Appointment>({
+export const Agenda = <T extends Event>({
   startHour,
   endHour,
   data,

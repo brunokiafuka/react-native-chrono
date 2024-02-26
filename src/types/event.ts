@@ -1,4 +1,4 @@
-export type Appointment = {
+export type Event = {
   startDate: string;
   endDate: string;
   id: string;
