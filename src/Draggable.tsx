@@ -4,7 +4,7 @@ import Animated from "react-native-reanimated";
 import { useDraggable } from "./hooks/useDraggable";
 
 export const Draggable = ({ children }: { children: React.ReactNode }) => {
-  const { dragGesture, animatedStyles } = useDraggable();
+  const { dragGesture, animatedStyles } = useDraggable(() => {});
 
   return (
     <GestureDetector gesture={dragGesture}>
