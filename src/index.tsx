@@ -1,3 +1,3 @@
-import { Agenda } from "./Agenda";
+import { AgendaProvider } from "./Agenda";
 
-export { Agenda };
+export { AgendaProvider as Agenda };

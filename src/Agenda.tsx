@@ -1,16 +1,26 @@
 import React, { useMemo } from "react";
 import { StyleSheet, View, ScrollView } from "react-native";
 import { generateTimeSlots } from "./utils/generateTimeSlots";
-import type { Event } from "./types/event";
-import { Draggable } from "./Draggable";
+import type { AgendaEvent } from "./types/event";
+import { EventRenderer } from "./components/EventRenderer";
+import { RecoilRoot, useSetRecoilState } from "recoil";
+import { configAtom } from "./store/config";
 
-type Props<T extends Event> = {
+type Props<T extends AgendaEvent> = {
   startHour: number;
   endHour: number;
   data: T[];
   itemSize: number;
   scrollEnabled?: boolean;
-  renderItem: ({ item, index }: { item: T; index: number }) => React.ReactNode;
+  renderEvent: ({
+    event,
+    index,
+    height,
+  }: {
+    event: T;
+    index: number;
+    height: number;
+  }) => React.ReactNode;
   renderTimeSlot: ({
     item,
     index,
@@ -20,18 +30,43 @@ type Props<T extends Event> = {
   }) => React.ReactNode;
 };
 
-export const Agenda = <T extends Event>({
+export const Agenda = <T extends AgendaEvent>({
   startHour,
   endHour,
   data,
-  renderItem,
+  renderEvent,
   itemSize,
   scrollEnabled = true,
   renderTimeSlot,
 }: Props<T>) => {
+  const setConfig = useSetRecoilState(configAtom);
+
   const timeSlots = generateTimeSlots(startHour, endHour);
 
   const itemStyle = useMemo(() => ({ height: itemSize }), [itemSize]);
+
+  const renderTimeSlots = useMemo(() => {
+    return timeSlots.map((item, index) => (
+      <View key={index} style={itemStyle}>
+        {renderTimeSlot({ item, index })}
+      </View>
+    ));
+  }, [timeSlots, renderTimeSlot]);
+
+  const renderEvents = useMemo(() => {
+    return data.map((item, index) => (
+      <EventRenderer
+        renderEvent={renderEvent}
+        key={index}
+        event={item}
+        index={index}
+      />
+    ));
+  }, [data, renderEvent]);
+
+  React.useEffect(() => {
+    setConfig({ startHour, endHour, itemSize });
+  }, [startHour, endHour, itemSize]);
 
   return (
     <ScrollView
@@ -39,19 +74,27 @@ export const Agenda = <T extends Event>({
       style={styles.container}
       contentContainerStyle={styles.contentContainer}
     >
-      <View style={styles.timeSlotContainer}>
-        {timeSlots.map((item, index) => (
-          <View key={index} style={itemStyle}>
-            {renderTimeSlot({ item, index })}
-          </View>
-        ))}
-      </View>
-      <View style={styles.itemContainer}>
-        {data.map((item, index) => (
-          <Draggable key={item.id}>{renderItem({ item, index })}</Draggable>
-        ))}
-      </View>
+      <View style={styles.timeSlotContainer}>{renderTimeSlots}</View>
+      <View style={styles.itemContainer}>{renderEvents}</View>
     </ScrollView>
+  );
+};
+
+export const AgendaProvider = <T extends AgendaEvent>({
+  startHour,
+  endHour,
+  itemSize,
+  ...props
+}: Props<T>) => {
+  return (
+    <RecoilRoot>
+      <Agenda
+        startHour={startHour}
+        endHour={endHour}
+        itemSize={itemSize}
+        {...props}
+      />
+    </RecoilRoot>
   );
 };
 

@@ -6,18 +6,26 @@ import {
 } from "react-native-reanimated";
 import { useState } from "react";
 
-export const useDraggable = () => {
+type Draggable = {
+  (position: { x: number; y: number }): void;
+};
+
+export const useDraggable = (onDragEnd: Draggable) => {
   const position = useSharedValue({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
 
   const dragGesture = Gesture.Pan()
     .activateAfterLongPress(500)
+    .onStart((event) => {
+      position.value = { x: 0, y: event.translationY };
+    })
     .onUpdate((event) => {
       position.value = { x: event.translationX, y: event.translationY };
       runOnJS(setIsDragging)(true);
     })
-    .onEnd(() => {
-      position.value = { x: 0, y: position.value.y };
+    .onEnd((event) => {
+      position.value = { x: 0, y: event.translationY };
+      runOnJS(onDragEnd)(position.value);
       runOnJS(setIsDragging)(false);
     });
 

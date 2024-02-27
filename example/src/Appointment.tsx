@@ -1,33 +1,24 @@
 import React from "react";
 import { Text, StyleSheet, View } from "react-native";
-import { format, getHours, getMinutes } from "date-fns";
-import { calculateAppointmentHeight, randomColor } from "./utils/misc";
+import { format } from "date-fns";
+import { randomColor } from "./utils/misc";
 
 type Props = {
   type: string;
   startDate: string;
   endDate: string;
   id: string;
+  height: number;
 };
 
-export const Appointment = ({ startDate, endDate }: Props) => {
-  const height = calculateAppointmentHeight(
-    new Date(startDate),
-    new Date(endDate),
-  );
+export const Appointment = ({ startDate, endDate, height }: Props) => {
   const backgroundColor = randomColor();
-
-  const startHour = 8;
-  const hourHeight = 100;
-  const hours = getHours(new Date(startDate));
-  const minutes = getMinutes(new Date(startDate));
-  const top = hourHeight * (hours - startHour) + (minutes * hourHeight) / 60;
 
   const startTime = format(new Date(startDate), "h:mm a");
   const endTime = format(new Date(endDate), "h:mm a");
 
   return (
-    <View style={[styles.container, { backgroundColor, height, top: top }]}>
+    <View style={[styles.container, { backgroundColor, height }]}>
       <Text>Start Time: {startTime}</Text>
       <Text>End Time: {endTime}</Text>
     </View>
