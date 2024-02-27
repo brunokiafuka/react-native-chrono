@@ -43,8 +43,8 @@ const events = [
         </View>
       );
     }}
-    renderItem={({ item, index }) => (
-      <View key={item.id}>
+    renderEvent={({ item, index, height }) => (
+      <View key={item.id} style={{ height }}>
         <Text>{item.startDate}</Text>
         <Text>{item.endDate}</Text>
       </View>
