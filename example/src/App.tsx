@@ -21,12 +21,13 @@ export default function App() {
             </View>
           );
         }}
-        renderEvent={({ event, index }) => (
+        renderEvent={({ event, index, height }) => (
           <Appointment
             key={index}
             type=""
             startDate={event.startDate}
             endDate={event.endDate}
+            height={height}
             id={event.id}
           />
         )}

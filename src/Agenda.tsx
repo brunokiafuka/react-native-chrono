@@ -3,7 +3,8 @@ import { StyleSheet, View, ScrollView } from "react-native";
 import { generateTimeSlots } from "./utils/generateTimeSlots";
 import type { AgendaEvent } from "./types/event";
 import { EventRenderer } from "./components/EventRenderer";
-import { RecoilRoot } from "recoil";
+import { RecoilRoot, useSetRecoilState } from "recoil";
+import { configAtom } from "./store/config";
 
 type Props<T extends AgendaEvent> = {
   startHour: number;
@@ -14,9 +15,11 @@ type Props<T extends AgendaEvent> = {
   renderEvent: ({
     event,
     index,
+    height,
   }: {
     event: T;
     index: number;
+    height: number;
   }) => React.ReactNode;
   renderTimeSlot: ({
     item,
@@ -36,6 +39,8 @@ export const Agenda = <T extends AgendaEvent>({
   scrollEnabled = true,
   renderTimeSlot,
 }: Props<T>) => {
+  const setConfig = useSetRecoilState(configAtom);
+
   const timeSlots = generateTimeSlots(startHour, endHour);
 
   const itemStyle = useMemo(() => ({ height: itemSize }), [itemSize]);
@@ -59,16 +64,36 @@ export const Agenda = <T extends AgendaEvent>({
     ));
   }, [data, renderEvent]);
 
+  React.useEffect(() => {
+    setConfig({ startHour, endHour, itemSize });
+  }, [startHour, endHour, itemSize]);
+
+  return (
+    <ScrollView
+      scrollEnabled={scrollEnabled}
+      style={styles.container}
+      contentContainerStyle={styles.contentContainer}
+    >
+      <View style={styles.timeSlotContainer}>{renderTimeSlots}</View>
+      <View style={styles.itemContainer}>{renderEvents}</View>
+    </ScrollView>
+  );
+};
+
+export const AgendaProvider = <T extends AgendaEvent>({
+  startHour,
+  endHour,
+  itemSize,
+  ...props
+}: Props<T>) => {
   return (
     <RecoilRoot>
-      <ScrollView
-        scrollEnabled={scrollEnabled}
-        style={styles.container}
-        contentContainerStyle={styles.contentContainer}
-      >
-        <View style={styles.timeSlotContainer}>{renderTimeSlots}</View>
-        <View style={styles.itemContainer}>{renderEvents}</View>
-      </ScrollView>
+      <Agenda
+        startHour={startHour}
+        endHour={endHour}
+        itemSize={itemSize}
+        {...props}
+      />
     </RecoilRoot>
   );
 };
