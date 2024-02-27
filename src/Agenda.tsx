@@ -71,12 +71,12 @@ export const Agenda = <T extends AgendaEvent>({
 
   return (
     <View style={styles.container}>
+      <Weekdays />
       <ScrollView
         scrollEnabled={scrollEnabled}
         style={styles.container}
         contentContainerStyle={styles.contentContainer}
       >
-        <Weekdays />
         <View style={styles.timeSlotContainer}>{renderTimeSlots}</View>
         <View style={styles.itemContainer}>{renderEvents}</View>
       </ScrollView>
